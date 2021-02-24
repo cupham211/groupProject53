@@ -40,27 +40,34 @@ def conv_num(num_str):
         if perCount > 1 or ch not in valid_digits:
             return None
 
+    num_str = process_intfloat(num_str, perCount, charPos)
+
+    return num_str * negSign
+
+
+def process_intfloat(num_str, percount, charpos):
+    """strips string of decimals and sends to correct converting function"""
     # sort thru decimal num placed at start/end of string
-    if perCount == 1 and num_str[0] == '.':
+    if percount == 1 and num_str[0] == '.':
         num_str = num_str[1:]
         num_str = conv_frac(num_str)
-    elif perCount == 1 and num_str[-1] == '.':
+    elif percount == 1 and num_str[-1] == '.':
         num_str = num_str[:-1]
         num_str = conv_whole(num_str) + 0.0
 
     # split str at decimal point position if nums on both sides of decimal pt
-    elif perCount == 1:
-        wholeNum = num_str[:charPos]
-        fracNum = num_str[charPos + 1:]
+    elif percount == 1:
+        wholeNum = num_str[:charpos]
+        fracNum = num_str[charpos + 1:]
         wholeNum = conv_whole(wholeNum)
         fracNum = conv_frac(fracNum)
         num_str = wholeNum + fracNum + 0.0
 
     # if string passed is not float, don't convert to float
-    elif perCount == 0:
+    elif percount == 0:
         num_str = conv_whole(num_str)
 
-    return num_str * negSign
+    return num_str
 
 
 def conv_whole(num):
