@@ -49,18 +49,14 @@ def process_intfloat(num_str, percount, charpos):
     """strips string of decimals and sends to correct converting function"""
     # sort thru decimal num placed at start/end of string
     if percount == 1 and num_str[0] == '.':
-        num_str = num_str[1:]
-        num_str = conv_frac(num_str)
+        num_str = conv_frac(num_str[1:])
     elif percount == 1 and num_str[-1] == '.':
-        num_str = num_str[:-1]
-        num_str = conv_whole(num_str) + 0.0
+        num_str = conv_whole(num_str[:-1]) + 0.0
 
     # split str at decimal point position if nums on both sides of decimal pt
     elif percount == 1:
-        wholeNum = num_str[:charpos]
-        fracNum = num_str[charpos + 1:]
-        wholeNum = conv_whole(wholeNum)
-        fracNum = conv_frac(fracNum)
+        wholeNum = conv_whole(num_str[:charpos])
+        fracNum = conv_frac(num_str[charpos + 1:])
         num_str = wholeNum + fracNum + 0.0
 
     # if string passed is not float, don't convert to float
