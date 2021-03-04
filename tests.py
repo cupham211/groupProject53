@@ -1,10 +1,8 @@
-from task import my_datetime
 import random
-import unittest
 import datetime
 import unittest
 from task import conv_num
-
+from task import my_datetime
 
 class TestCase(unittest.TestCase):
     # check if empty argument returns None for function 1
