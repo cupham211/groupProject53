@@ -1,6 +1,8 @@
+import random
+import datetime
 import unittest
 from task import conv_num
-
+from task import my_datetime
 
 class TestCase(unittest.TestCase):
     # check if empty argument returns None for function 1
@@ -96,6 +98,21 @@ class TestCase(unittest.TestCase):
         self.assertEqual(conv_num(num), None, msg='f1 trailing decimals '
                                                   'not None = {}'.format(num))
 
+    # Generate 100 random test cases to verify function 2
+    def test16(self):
+        tests_to_generate = 100
+
+        # Generate random test cases
+        for i in range(tests_to_generate):
+            # Generate test time
+            seconds = random.randint(0,9999999999)
+            output = my_datetime(seconds)
+            date = datetime.datetime.utcfromtimestamp(seconds)
+            expected = date.strftime('%m-%d-%Y')
+            # Generate failure message if my_datetime doesn't match expectation
+            if output != expected:
+                print('Failure: {} should be {}'.format(output, expected))
 
 if __name__ == '__main__':
-    unittest.main()
+  unittest.main()
+  

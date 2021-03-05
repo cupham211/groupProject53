@@ -104,3 +104,73 @@ def conv_hex(num):
             return None
         converted += hexdict[value] * (16 ** i)
     return converted
+
+# Function 2 Author: Ben Depew
+# Main function definition
+def my_datetime(num_sec):
+    num_days = calc_days(num_sec)
+    num_years, num_days = calc_years(num_days)
+    month, day, year = calculate_date(num_years, num_days)
+    date = convert_to_string(month,day,year)
+    return date
+
+
+# Calculate days from seconds
+def calc_days(num_sec):
+    num_days = 0
+    sec_in_day = 86400
+    while num_sec >= sec_in_day:
+        num_sec -= sec_in_day
+        num_days += 1
+    return num_days
+
+
+# Calculate number of 400 year cycles to simplify by
+def calc_years(num_days):
+    days_in_400years = 146097
+    num_years = 0
+
+    while num_days >= 146097:
+        num_days -= 146097
+        num_years += 400
+
+    return num_years, num_days
+
+
+# Calculate month, day, year
+def calculate_date(num_years, num_days):
+    days_in_month = [31,28,31,30,31,30,31,31,30,31,30,31]
+    days_in_month_leapyear = [31,29,31,30,31,30,31,31,30,31,30,31]
+
+    current_year = 1970 + num_years
+    current_month = 1
+    current_day = 1
+
+    while num_days:
+        calendar = days_in_month
+        if current_year % 400 == 0:
+            calendar = days_in_month_leapyear
+        elif current_year % 100 == 0:
+            calendar = days_in_month
+        elif current_year % 4 == 0:
+            calendar = days_in_month_leapyear
+        if current_day == calendar[current_month-1]:
+            current_month += 1
+            if current_month == 13:
+                current_month = 1
+                current_year += 1
+            current_day = 0
+        current_day += 1
+        num_days -= 1
+    return current_month, current_day, current_year
+
+
+# Convert month day and year to the right string output
+def convert_to_string(month,day,year):
+    date = str(month) + "-"
+    if month < 10:
+        date = "0" + date
+    if day < 10:
+        date = date + "0"
+    date = date + str(day) + "-" + str(year)
+    return date
