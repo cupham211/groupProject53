@@ -105,7 +105,6 @@ def conv_hex(num):
         converted += hexdict[value] * (16 ** i)
     return converted
 
-
 # Function 2 Author: Ben Depew
 # Main function definition
 def my_datetime(num_sec):
