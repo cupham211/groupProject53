@@ -102,6 +102,7 @@ class TestCase(unittest.TestCase):
     def test16(self):
         tests_to_generate = 100
 
+
         # Generate random test cases
         for i in range(tests_to_generate):
             # Generate test time
@@ -160,3 +161,4 @@ class TestCase(unittest.TestCase):
 
 if __name__ == '__main__':
   unittest.main()
+
