@@ -4,6 +4,7 @@ import unittest
 from task import conv_num
 from task import my_datetime
 
+
 class TestCase(unittest.TestCase):
     # check if empty argument returns None for function 1
     def test1(self):
@@ -105,7 +106,7 @@ class TestCase(unittest.TestCase):
         # Generate random test cases
         for i in range(tests_to_generate):
             # Generate test time
-            seconds = random.randint(0,9999999999)
+            seconds = random.randint(0, 9999999999)
             output = my_datetime(seconds)
             date = datetime.datetime.utcfromtimestamp(seconds)
             expected = date.strftime('%m-%d-%Y')
@@ -113,6 +114,6 @@ class TestCase(unittest.TestCase):
             if output != expected:
                 print('Failure: {} should be {}'.format(output, expected))
 
+
 if __name__ == '__main__':
-  unittest.main()
-  
+    unittest.main()
