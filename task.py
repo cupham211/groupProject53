@@ -132,8 +132,8 @@ def calc_years(num_days):
     days_in_400years = 146097
     num_years = 0
 
-    while num_days >= 146097:
-        num_days -= 146097
+    while num_days >= days_in_400years:
+        num_days -= days_in_400years
         num_years += 400
 
     return num_years, num_days
