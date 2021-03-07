@@ -1,5 +1,6 @@
 # CS 362-400 Group 53
 
+
 # Function 1 Author: Christine Pham
 def conv_num(num_str):
     """function that takes a string of numbers and converts it to int/float.
@@ -105,13 +106,14 @@ def conv_hex(num):
         converted += hexdict[value] * (16 ** i)
     return converted
 
+
 # Function 2 Author: Ben Depew
 # Main function definition
 def my_datetime(num_sec):
     num_days = calc_days(num_sec)
     num_years, num_days = calc_years(num_days)
     month, day, year = calculate_date(num_years, num_days)
-    date = convert_to_string(month,day,year)
+    date = convert_to_string(month, day, year)
     return date
 
 
@@ -130,8 +132,8 @@ def calc_years(num_days):
     days_in_400years = 146097
     num_years = 0
 
-    while num_days >= 146097:
-        num_days -= 146097
+    while num_days >= days_in_400years:
+        num_days -= days_in_400years
         num_years += 400
 
     return num_years, num_days
@@ -139,8 +141,8 @@ def calc_years(num_days):
 
 # Calculate month, day, year
 def calculate_date(num_years, num_days):
-    days_in_month = [31,28,31,30,31,30,31,31,30,31,30,31]
-    days_in_month_leapyear = [31,29,31,30,31,30,31,31,30,31,30,31]
+    days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    days_in_month_leapyear = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
     current_year = 1970 + num_years
     current_month = 1
@@ -166,7 +168,7 @@ def calculate_date(num_years, num_days):
 
 
 # Convert month day and year to the right string output
-def convert_to_string(month,day,year):
+def convert_to_string(month, day, year):
     date = str(month) + "-"
     if month < 10:
         date = "0" + date
