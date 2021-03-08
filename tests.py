@@ -5,6 +5,7 @@ from task import conv_num
 from task import my_datetime
 from task import conv_endian
 
+
 class TestCase(unittest.TestCase):
     # check if empty argument returns None for function 1
     def test1(self):
@@ -103,18 +104,17 @@ class TestCase(unittest.TestCase):
     def test16(self):
         tests_to_generate = 100
 
-
         # Generate random test cases
         for i in range(tests_to_generate):
             # Generate test time
-            seconds = random.randint(0,9999999999)
+            seconds = random.randint(0, 9999999999)
             output = my_datetime(seconds)
             date = datetime.datetime.utcfromtimestamp(seconds)
             expected = date.strftime('%m-%d-%Y')
             # Generate failure message if my_datetime doesn't match expectation
             if output != expected:
                 print('Failure: {} should be {}'.format(output, expected))
-
+     
     #check if decimal 954786 converts to hex number corectly in big endian fashion
     def test17(self):
         num = 954786
@@ -170,6 +170,6 @@ class TestCase(unittest.TestCase):
         num = 4325
         self.assertEqual(conv_endian(num, 'BiG'), 'None')
 
-if __name__ == '__main__':
-  unittest.main()
 
+if __name__ == '__main__':
+    unittest.main()
