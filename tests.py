@@ -3,6 +3,7 @@ import datetime
 import unittest
 from task import conv_num
 from task import my_datetime
+from task import conv_endian
 
 class TestCase(unittest.TestCase):
     # check if empty argument returns None for function 1
@@ -158,6 +159,16 @@ class TestCase(unittest.TestCase):
     def test24(self):
         num = 4325
         self.assertEqual(conv_endian(num, 'little'), 'E5 10')
+    
+    #check if the litte written in a strange way gives the correct result
+    def test25(self):
+        num = 4325
+        self.assertEqual(conv_endian(num, 'liTTle'), 'None')
+
+    #check if the big written in a strange way gives the correct result
+    def test26(self):
+        num = 4325
+        self.assertEqual(conv_endian(num, 'BiG'), 'None')
 
 if __name__ == '__main__':
   unittest.main()
