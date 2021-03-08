@@ -1,4 +1,6 @@
 # CS 362-400 Group 53
+import math
+
 
 # Function 1 Author: Christine Pham
 def conv_num(num_str):
@@ -104,3 +106,116 @@ def conv_hex(num):
             return None
         converted += hexdict[value] * (16 ** i)
     return converted
+
+
+# Function 2 Author: Ben Depew
+# Main function definition
+def my_datetime(num_sec):
+    num_days = calc_days(num_sec)
+    num_years, num_days = calc_years(num_days)
+    month, day, year = calculate_date(num_years, num_days)
+    date = convert_to_string(month, day, year)
+    return date
+
+
+# Calculate days from seconds
+def calc_days(num_sec):
+    num_days = 0
+    sec_in_day = 86400
+    while num_sec >= sec_in_day:
+        num_sec -= sec_in_day
+        num_days += 1
+    return num_days
+
+
+# Calculate number of 400 year cycles to simplify by
+def calc_years(num_days):
+    days_in_400years = 146097
+    num_years = 0
+
+    while num_days >= days_in_400years:
+        num_days -= days_in_400years
+        num_years += 400
+
+    return num_years, num_days
+
+
+# Calculate month, day, year
+def calculate_date(num_years, num_days):
+    days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    days_in_month_leapyear = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+    current_year = 1970 + num_years
+    current_month = 1
+    current_day = 1
+
+    while num_days:
+        calendar = days_in_month
+        if current_year % 400 == 0:
+            calendar = days_in_month_leapyear
+        elif current_year % 100 == 0:
+            calendar = days_in_month
+        elif current_year % 4 == 0:
+            calendar = days_in_month_leapyear
+        if current_day == calendar[current_month - 1]:
+            current_month += 1
+            if current_month == 13:
+                current_month = 1
+                current_year += 1
+            current_day = 0
+        current_day += 1
+        num_days -= 1
+    return current_month, current_day, current_year
+
+
+# Convert month day and year to the right string output
+def convert_to_string(month, day, year):
+    date = str(month) + "-"
+    if month < 10:
+        date = "0" + date
+    if day < 10:
+        date = date + "0"
+    date = date + str(day) + "-" + str(year)
+    return date
+
+
+# Author: Andrew Yemtsev, Christine Pham
+# Function that convert number into a hex letter
+def conv_endian(num, endian="big"):
+    num = math.trunc(num)
+
+    sign = ''
+    if num < 0:
+        sign = '-'
+        num *= -1
+
+    converted = make_hex(num)
+
+    # tack on 0 if hex has uneven length
+    if len(converted) % 2 != 0:
+        converted = '0' + converted
+
+    # split hex number into pairs
+    converted = [converted[i:i + 2] for i in range(0, len(converted), 2)]
+
+    if endian == 'big':
+        return sign + " ".join(converted)
+    elif endian == 'little':
+        converted.reverse()
+        return sign + " ".join(converted)
+    return None
+
+
+# helper function to convert integer into hexadecimal
+def make_hex(num):
+    hex_val = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5',
+               6: '6', 7: '7', 8: '8', 9: '9', 10: 'A',
+               11: 'B', 12: 'C', 13: 'D', 14: 'E', 15: 'F'}
+
+    hex_str = ''
+    while num != 0:
+        num_floor, rem = divmod(num, 16)
+        hex_str += hex_val[rem]
+        num = num_floor
+
+    return hex_str[::-1]
