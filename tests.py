@@ -1,5 +1,9 @@
+import random
+import datetime
 import unittest
 from task import conv_num
+from task import my_datetime
+from task import conv_endian
 
 
 class TestCase(unittest.TestCase):
@@ -95,6 +99,76 @@ class TestCase(unittest.TestCase):
         num = '-35...'
         self.assertEqual(conv_num(num), None, msg='f1 trailing decimals '
                                                   'not None = {}'.format(num))
+
+    # Generate 100 random test cases to verify function 2
+    def test16(self):
+        tests_to_generate = 100
+
+        # Generate random test cases
+        for i in range(tests_to_generate):
+            # Generate test time
+            seconds = random.randint(0, 9999999999)
+            output = my_datetime(seconds)
+            date = datetime.datetime.utcfromtimestamp(seconds)
+            expected = date.strftime('%m-%d-%Y')
+            # Generate failure message if my_datetime doesn't match expectation
+            if output != expected:
+                print('Failure: {} should be {}'.format(output, expected))
+
+    # check if decimal 954786 converts to hex number correctly in big endian
+    def test17(self):
+        num = 954786
+        self.assertEqual(conv_endian(num, 'big'), '0E 91 A2')
+
+    # check if the function with no second argument gives same result as test17
+    def test18(self):
+        num = 954786
+        self.assertEqual(conv_endian(num), '0E 91 A2')
+
+    # check if negative decimal gives the right result
+    def test19(self):
+        num = -954786
+        self.assertEqual(conv_endian(num), '-0E 91 A2')
+
+    # check if little endian works correctly
+    def test20(self):
+        num = 954786
+        self.assertEqual(conv_endian(num, 'little'), 'A2 91 0E')
+
+    # check if negative decimal and little endian work together correctly
+    def test21(self):
+        num = -954786
+        self.assertEqual(conv_endian(num, 'little'), '-A2 91 0E')
+
+    # check if 'endian='little' argument works as supposed to
+    def test22(self):
+        num = -954786
+        self.assertEqual(conv_endian(num, endian='little'), '-A2 91 0E')
+
+    # check if the case when endian argument is incorrect gives correct result
+    def test23(self):
+        num = -954786
+        self.assertEqual(conv_endian(num, endian='small'), None)
+
+    # check if the decimal 4325 gives the correct result
+    def test24(self):
+        num = 4325
+        self.assertEqual(conv_endian(num), '10 E5')
+
+    # check if the decimal -4325 gives the correct result
+    def test25(self):
+        num = 4325
+        self.assertEqual(conv_endian(num, 'little'), 'E5 10')
+
+    # check if the little written in a strange way gives the correct result
+    def test26(self):
+        num = 4325
+        self.assertEqual(conv_endian(num, 'liTTle'), None)
+
+    # check if the big written in a strange way gives the correct result
+    def test27(self):
+        num = 4325
+        self.assertEqual(conv_endian(num, 'BiG'), None)
 
 
 if __name__ == '__main__':
