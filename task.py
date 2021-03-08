@@ -176,3 +176,88 @@ def convert_to_string(month, day, year):
         date = date + "0"
     date = date + str(day) + "-" + str(year)
     return date
+
+
+#Author: Andrew Yemtsev
+#Function that convert number into a hex letter
+def  lit(x):
+	if x == 15:
+		return "F"
+	elif x == 14:
+		return "E"
+	elif x == 13:
+		return "D"
+	elif x == 12:
+		return "C"
+	elif x == 11:
+		return "B"
+	elif x == 10:
+		return "A"
+	else:
+		return str(x)
+
+# Function 3
+def conv_endian(num, endian='big'):
+	result = ""
+	bytes = []
+	values_num = 0
+	value_counter = 0
+
+	#handle the case when negative integer
+	if num < 0:
+		num *= -1
+		result = "-"
+
+	#check if the amount of characters in hexadecimal number is Odd or Even
+	temp_num = num
+	while temp_num > 0:
+		temp_num = temp_num/16
+		values_num += 1
+
+	if values_num%2 == 0:
+		isOdd = False
+	else:
+		isOdd = True
+
+	#Dec to Hex conversion algorithm
+	bytes.append('')
+	index = 0
+	while num > 0:
+		num, remainder = divmod(num, 16)
+		bytes[index] = lit(remainder) + bytes[index]
+		value_counter += 1
+		if value_counter%2 == 0:
+			index += 1
+			bytes.append('')
+
+	#Handle the case when the amount of charactes in hex number is Odd
+	if isOdd:
+		bytes[index] = '0' + bytes[index]
+
+	#Handle the case when the amount of charactes in hex number is Even
+	else:
+		bytes.pop(len(bytes)-1)
+
+	#Put all bytes in a little endian fashion 
+	if endian == "little":
+		index = 0
+		for x in bytes:
+			index += 1
+			result += x
+			if index != len(bytes):
+				result += ' '
+	
+	#Put all bytes in a big endian fashion 
+	elif endian == "big":
+		index = 0
+		for x in reversed(bytes):
+			index += 1
+			result += x
+			if index != len(bytes):
+				result += ' '
+
+	#Handle the case when the input is neither 'little' nor 'big' for Endian
+	else:
+		result = 'None'
+	
+	return result
