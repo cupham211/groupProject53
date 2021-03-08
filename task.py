@@ -1,4 +1,5 @@
 # CS 362-400 Group 53
+import math
 
 
 # Function 1 Author: Christine Pham
@@ -156,7 +157,7 @@ def calculate_date(num_years, num_days):
             calendar = days_in_month
         elif current_year % 4 == 0:
             calendar = days_in_month_leapyear
-        if current_day == calendar[current_month-1]:
+        if current_day == calendar[current_month - 1]:
             current_month += 1
             if current_month == 13:
                 current_month = 1
@@ -178,86 +179,43 @@ def convert_to_string(month, day, year):
     return date
 
 
-#Author: Andrew Yemtsev
-#Function that convert number into a hex letter
-def  lit(x):
-	if x == 15:
-		return "F"
-	elif x == 14:
-		return "E"
-	elif x == 13:
-		return "D"
-	elif x == 12:
-		return "C"
-	elif x == 11:
-		return "B"
-	elif x == 10:
-		return "A"
-	else:
-		return str(x)
+# Author: Andrew Yemtsev, Christine Pham
+# Function that convert number into a hex letter
+def conv_endian(num, endian="big"):
+    num = math.trunc(num)
 
-# Function 3
-def conv_endian(num, endian='big'):
-	result = ""
-	bytes = []
-	values_num = 0
-	value_counter = 0
+    sign = ''
+    if num < 0:
+        sign = '-'
+        num *= -1
 
-	#handle the case when negative integer
-	if num < 0:
-		num *= -1
-		result = "-"
+    converted = make_hex(num)
 
-	#check if the amount of characters in hexadecimal number is Odd or Even
-	temp_num = num
-	while temp_num > 0:
-		temp_num = temp_num/16
-		values_num += 1
+    # tack on 0 if hex has uneven length
+    if len(converted) % 2 != 0:
+        converted = '0' + converted
 
-	if values_num%2 == 0:
-		isOdd = False
-	else:
-		isOdd = True
+    # split hex number into pairs
+    converted = [converted[i:i + 2] for i in range(0, len(converted), 2)]
 
-	#Dec to Hex conversion algorithm
-	bytes.append('')
-	index = 0
-	while num > 0:
-		num, remainder = divmod(num, 16)
-		bytes[index] = lit(remainder) + bytes[index]
-		value_counter += 1
-		if value_counter%2 == 0:
-			index += 1
-			bytes.append('')
+    if endian == 'big':
+        return sign + " ".join(converted)
+    elif endian == 'little':
+        converted.reverse()
+        return sign + " ".join(converted)
+    return None
 
-	#Handle the case when the amount of charactes in hex number is Odd
-	if isOdd:
-		bytes[index] = '0' + bytes[index]
 
-	#Handle the case when the amount of charactes in hex number is Even
-	else:
-		bytes.pop(len(bytes)-1)
+# helper function to convert integer into hexadecimal
+def make_hex(num):
+    hex_val = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5',
+               6: '6', 7: '7', 8: '8', 9: '9', 10: 'A',
+               11: 'B', 12: 'C', 13: 'D', 14: 'E', 15: 'F'}
 
-	#Put all bytes in a little endian fashion 
-	if endian == "little":
-		index = 0
-		for x in bytes:
-			index += 1
-			result += x
-			if index != len(bytes):
-				result += ' '
-	
-	#Put all bytes in a big endian fashion 
-	elif endian == "big":
-		index = 0
-		for x in reversed(bytes):
-			index += 1
-			result += x
-			if index != len(bytes):
-				result += ' '
+    hex_str = ''
+    while num != 0:
+        num_floor, rem = divmod(num, 16)
+        hex_str += hex_val[rem]
+        num = num_floor
 
-	#Handle the case when the input is neither 'little' nor 'big' for Endian
-	else:
-		result = 'None'
-	
-	return result
+    return hex_str[::-1]
